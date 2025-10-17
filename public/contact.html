@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+</html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durba Foundation - Contact Us</title>
+    <link rel="stylesheet" href="/css/contact.css">
+</head>
+
+
+<body>
+    <header>
+        <h1 class="logo"><img src="/images/durba-logo-small.png"></h1>
+        <!-- <h1 class="title">Welcome to Durba Foundation</h1> -->
+        <nav class="navigation">
+            <!-- <button type="submit" class="btn">Back</button> -->
+            <a href="/index.html">Back</a>
+            <!-- <a href="/public_html/subpages/about.html">About Us</a>
+            <a href="/public_html/subpages/sponsors.html">Sponsors</a>
+            <a href="/public_html/subpages/gallery.html">Event Gallery</a>
+            <a href="/public_html/subpages/contact.html">Contact Us</a>
+            <button class="loginBtn">Login</button> -->
+        </nav>
+    </header>
+
+    <div class="wrapper">
+
+        <div class="form-box">  
+            <p class="text-blk contact-title">Lets get in touch !</p>
+            <form class="contact-form"> 
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                    <input type="name" id="name" required>
+                    <label>Your Name</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+                    <input type="email" id="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="call-outline"></ion-icon></span>
+                    <input type="phone" id="phone" required>
+                    <label>Your Phone</label>
+                </div>
+
+                <select name="catselector" id="email-subject" >
+                    <option value="Select Message Category">Select Message Category</option>
+                    <option value="General Durba Event Inquiry">General Durba Event Inquiry</option>
+                    <option value="Sponsorship Inquiry">Sponsorship Inquiry</option>
+                    <option value="Vendor Inquiry">Vendor Inquiry</option>
+                    
+                </select>
+
+                
+                <div class="message-text">
+                    <label for="message">What is your message for us ?</label><br>
+                    <textarea id="message" name="message" class="form-element" placeholder="Please write your message here"></textarea>
+                </div>
+                <button type="submit" class="btn">Submit Message</button>
+            </form>
+
+        </div>
+</body>
+<script src="/js/contact.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</html>
