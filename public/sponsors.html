@@ -1,30 +1,161 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
+
+</html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Durba Foundation</title>
-    <link rel="stylesheet" href="/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <title>Durba Foundation</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 
 <body>
-    <header>
-        <h1 class="logo"><img src="/images/durba-logo-small.png"></h1>
-        <!-- <h1 class="title">Welcome to Durba Foundation</h1> -->
-        <nav class="navigation">
-            <a href="/index.html">Home</a>
-            <a href="/about.html">About Us</a>
-            <a href="/sponsors.html">Sponsors</a>
-            <a href="/gallery.html">Event Gallery</a>
-            <a href="/contact.html">Contact Us</a>
-            <button class="loginBtn">Login</button>
-        </nav>
-    </header>
+  <nav id="header" class="navbar navbar-expand-lg  navbar-dark">
+    <div class="container">
+      <div class="col-md-2">
+        <a href="#" class="navbar-brand">
+          <img src="images/durba-logo-small.png" id="logo">
+        </a>
+      </div>
+      <div class="col-md-4">
+        <span class="text-white">
+          <h1 id="company">Durba Foundation</h1>
+        </span>
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
+      <div class="collapse navbar-collapse" id="navmenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item active">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a href="sponsors.html" class="nav-link active">Sponsors</a>
+          </li>
+          <li class="nav-item">
+            <a href="gallery.html" class="nav-link">Events Gallery</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact Us</a>
+          </li>
+          <li class="nav-item">
+            <button class="loginBtn">Login</button>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- This is the Toronto picture in the website -->
+  <div id="banner" class="py-2">
+    <div class="container">
+      <div class="">
+        <div class="col-lg-6">
+          <div class="banner-titile">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- This is the body text in the home page -->
+  <div class="container section">
+    <div class="row-">
+      <div class="col-md-12">
+        <p class="lead-bold">Will Do the Sponsors page someday.</p>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="wrapper">
+    <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
+    <div class="form-box login">
+      <h2>Login</h2>
+      <form action="#">
+        <div class="input-box">
+          <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+          <input type="email" required>
+          <label>Email</label>
+        </div>
+        <div class="input-box">
+          <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+          <input type="password" required="">
+          <label>Password</label>
+        </div>
+        <div class="remember-forgot">
+          <label><input type="checkbox">Remember me</label>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div class="login-register">
+          <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-box register">
+      <h2>Registration</h2>
+      <form action="#">
+        <div class="input-box">
+          <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
+          <input type="username" required>
+          <label>Username</label>
+        </div>
+
+        <div class="input-box">
+          <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+          <input type="email" required>
+          <label>Email</label>
+        </div>
+        <div class="input-box">
+          <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+          <input type="password" required="">
+          <label>Password</label>
+        </div>
+        <button type="submit" class="btn">Register</button>
+        <div class="login-register">
+          <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <!-- Footer Section -->
+  <div id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12" id="terms">
+          <a href="privacy.html">Privacy policy</a> |
+          <a href="">Terms and Conditions</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" id="text-center-sm">
+          Copyright@2024 Durba Foundation
+        </div>
+        <div class="col-md-6">
+          <ul id="social-icons" class="float-md-right">
+            <li><a href="https://www.facebook.com/groups/durbafoundation" class="fa fa-facebook-square"
+                aria-hidden="true"></a></li>
+            <li><a href="https://twitter.com/DurbaFoundation" class="fa fa-twitter-square" aria-hidden="true"></a></li>
+            <li><a href="https://instagram.com/durbafoundation" class="fa fa-instagram" aria-hidden="true"></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"></script>
+    <script src="/js/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
-<script src="/js/script.js"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 </html>
