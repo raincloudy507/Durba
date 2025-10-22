@@ -716,8 +716,11 @@ a.readmore::after{
     top: -5px;
 }
 
-.absolute .top-0 .w-full .bg-transparent{
+/* hide immich header for each photo column in the gallery page */
+#asset-selection-app-bar{
   display:none;
   visibility:hidden;
+}
+
 
 
