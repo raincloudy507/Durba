@@ -717,10 +717,11 @@ a.readmore::after{
 }
 
 /* hide immich header for each photo column in the gallery page */
-#asset-selection-app-bar{
+#asset-selection-app-bar.grid.grid-cols-[10%_80%_10%].sm:grid-cols-[25%_50%_25%].justify-between.lg:grid-cols-[25%_50%_25%].bg-light.border.border-transparent.mx-2.my-2.place-items-center.rounded-lg.p-2.max-md:p-0 transition-all.bg-subtle.dark:bg-immich-dark-gray{
   display:none;
   visibility:hidden;
 }
+
 
 
 
