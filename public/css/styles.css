@@ -716,6 +716,7 @@ a.readmore::after{
     top: -5px;
 }
 
-.asset-selection-app-bar{
+.absolute top-0 w-full bg-transparent{
   display:none;
   visibility:hidden;
+
