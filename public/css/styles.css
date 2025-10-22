@@ -714,5 +714,8 @@ a.readmore::after{
 .contact-input-box input:focus~label,
 .contact-input-box input:valid~label {
     top: -5px;
-
 }
+
+.asset-selection-app-bar{
+  display:none;
+  visibility:hidden;
