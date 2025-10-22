@@ -716,7 +716,8 @@ a.readmore::after{
     top: -5px;
 }
 
-.absolute top-0 w-full bg-transparent{
+.absolute .top-0 .w-full .bg-transparent{
   display:none;
   visibility:hidden;
+
 
