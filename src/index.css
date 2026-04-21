@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1a1a1a;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Specific style for the big, rounded headers */
+h1, h2, h3 {
+  font-family: 'Comfortaa', cursive;
+  font-weight: 500; /* Medium weight like your image */
+  line-height: 1.2;
+  letter-spacing: -0.02em; /* Slightly tighter for that modern look */
+}
+
+/* Buttons often use the cleaner Poppins font */
+button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}

@@ -1,0 +1,207 @@
+/* Footer.css */
+
+/* This is the background container (the colored banner) */
+.footer-main {
+  background-color: #fffcf9; 
+  /* Reduce top padding to pull text up into the colored area */
+  padding: 40px 10% 80px 10%; 
+  display: flex;
+  flex-direction: column;
+  /* Change center to flex-start to move content to the top of the banner */
+  justify-content: flex-start; 
+  align-items: center;     
+  min-height: 350px; /* Reduced min-height to prevent excess empty space */
+  position: relative;
+}
+
+.footer-content-wrapper {
+  width: 100%;
+  max-width: 1200px; /* Replace variable with explicit value if it's not defined */
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
+}
+
+/* Three Column Grid Layout */
+.footer-primary-section {
+  display: grid;
+  /* Use fixed percentages for consistency */
+  grid-template-columns: 1.5fr 1fr 1.5fr; 
+  gap: 60px;
+  align-items: start; /* Ensures all column tops are aligned */
+  margin-top: 0;
+}
+
+
+/* Brand Column styling */
+.footer-brand-column p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  margin: 20px 0;
+  max-width: 350px;
+}
+
+.footer-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Ensure the titles don't have hidden browser margins */
+.footer-brand-name,
+.footer-column-title {
+  margin-top: 0 ;
+  padding-top: 0 ;
+  line-height: 1.2;
+}
+
+.footer-brand-name {
+  font-family: 'Comfortaa', cursive;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Social Links Layout */
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-social-link {
+  color: #f39c12;
+  padding: 8px;
+  border-radius: 50%;
+  background: rgba(243, 156, 18, 0.1);
+  transition: 0.3s;
+}
+
+.footer-social-link:hover {
+  background: #f39c12;
+  color: #fff;
+}
+
+/* Link List Styling */
+.footer-column-title {
+  font-family: 'Comfortaa', cursive;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+}
+
+.footer-link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 0;
+  display: block;
+  transition: 0.3s;
+}
+
+.footer-link:hover {
+  color: #f39c12;
+  transform: translateX(5px);
+}
+
+/* Contact Items Layout (Fixes the overlapping icons) */
+.footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;    /* Ensures the contact section stays wide enough for the address */
+  justify-content: center;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: center; /* Vertically centers icons with text */
+  gap: 16px;           /* Space between icon and text */
+  width: 100%;        /* Ensures the contact item takes full width to prevent squishing */
+  flex-direction: row;
+}
+
+.footer-contact-icon {
+  width: 44px;
+  height: 44px;
+  background-color: #fff0f3;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevents icon from getting squashed */
+  color: #e91e63;
+}
+
+.footer-contact-text {
+  display: flex;
+  flex-direction: column; /* Stack Label (e.g. EMAIL) over the actual info */
+  align-items: flex-start;
+  text-align: left;
+}
+
+
+.footer-contact-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.footer-contact-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 400;
+  white-space: normal; /* Keeps email/phone on one line */
+}
+
+/* Bottom Section */
+.footer-bottom-section {
+  margin-top: 50px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.footer-legal-links {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.footer-legal-link span:hover {
+  color: #f39c12;
+}
+
+/* Remove any top margins that might be pushing text down
+.footer-brand-column, 
+.footer-links-column, 
+*/
+
+.footer-column-title {
+  margin-top: 0 !important; /* Forces the headers to start at the very top of their column */
+  padding-top: 0 !important;
+  line-height: 1;
+}
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .footer-primary-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
