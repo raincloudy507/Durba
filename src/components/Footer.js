@@ -50,35 +50,35 @@ const Footer = () => {
     							<h4 className='footer-column-title'>Quick links</h4>
     							<ul className='footer-link-list'>
     								<li className='footer-link-item'>
-    									<a href='#'>
+    									<a href='#Homepage'>
     										<div className='footer-link'>
     											<span> About Us </span>
     										</div>
     									</a>
     								</li>
     								<li className='footer-link-item'>
-    									<a href='#'>
+    									<a href='#Mission'>
     										<div className='footer-link'>
     											<span> Our Mission </span>
     										</div>
     									</a>
     								</li>
     								<li className='footer-link-item'>
-    									<a href='#'>
+    									<a href='#Mission'>
     										<div className='footer-link'>
     											<span> Events Calendar </span>
     										</div>
     									</a>
     								</li>
     								<li className='footer-link-item'>
-    									<a href='#'>
+    									<a href='#Mission'>
     										<div className='footer-link'>
     											<span> Get Involved </span>
     										</div>
     									</a>
     								</li>
     								<li className='footer-link-item'>
-    									<a href='#'>
+    									<a href='#Mission'>
     										<div className='footer-link'>
     											<span> Durbar Darpan </span>
     										</div>
@@ -139,23 +139,23 @@ const Footer = () => {
                     Registered Non-Profit Organization in Canada.
                   </p>
                   <div class="footer-legal-links">
-                    <a href="#">
+                    <a href="#Homepage">
                       <div class="footer-legal-link">
                         <span>Privacy Policy</span>
                       </div>
                     </a>
                     <span class="footer-legal-separator">|</span>
-                    <a href="#">
+                    <a href="#Homepage">
                       <div class="footer-legal-link">
                         <span>Terms of Service</span>
                       </div>
                     </a>
-                    <span class="footer-legal-separator">|</span>
-                    <a href="#">
-                      <div class="footer-legal-link">
-                        <span>Accessibility</span>
-                      </div>
-                    </a>
+                    // <span class="footer-legal-separator">|</span>
+                    // <a href="#">
+                    //   <div class="footer-legal-link">
+                    //     <span>Accessibility</span>
+                    //   </div>
+                    // </a>
                   </div>
                 </div>
     					</div>
