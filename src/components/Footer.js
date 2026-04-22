@@ -150,12 +150,12 @@ const Footer = () => {
                         <span>Terms of Service</span>
                       </div>
                     </a>
-                    // <span class="footer-legal-separator">|</span>
-                    // <a href="#">
-                    //   <div class="footer-legal-link">
-                    //     <span>Accessibility</span>
-                    //   </div>
-                    // </a>
+                 {/*<span class="footer-legal-separator">|</span>
+                    <a href="#">
+                      <div class="footer-legal-link">
+                        <span>Accessibility</span>
+                      </div>
+                    </a> */}
                   </div>
                 </div>
     					</div>
