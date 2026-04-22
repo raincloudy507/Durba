@@ -3,25 +3,23 @@ import './Navigation.css';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // 1. Add state to track the active link
+  const [activeLink, setActiveLink] = useState('Home');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // 2. Function to handle link clicks
+  const handleNavLinkClick = (text) => {
+    setActiveLink(text);
+    setIsMenuOpen(false); // Close mobile menu when a link is clicked
+  };
 
   return (
     <div className="navigation-wrapper">
       <div className="navigation-container1">
-        <div className="navigation-container2">
-          <div className="navigation-container3">
-            <style dangerouslySetInnerHTML={{__html: `
-                @media (prefers-reduced-motion: reduce) {
-                        .navigation, .navigation-logo { animation: none; transition: none; }
-              }
-            `}} />
-
-          </div>
-        </div>
         <nav id="navigation-main" className="navigation">
           <div className="navigation-container">
-            <a href="/">
+            <a href="/" onClick={() => setActiveLink('Home')}>
               <div aria-label="Durba Foundation Home" className="navigation-logo">
                 <div className="navigation-logo-icon">
                   <img src="/durba-logo-small.png" alt="durba-logo-small" />
@@ -33,12 +31,7 @@ const Navigation = () => {
               </div>
             </a>
 
-            {/* Hamburger Toggle */}
-            <button 
-              className="navigation-toggle"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
+            <button className="navigation-toggle" onClick={toggleMenu} aria-label="Toggle menu">
               {!isMenuOpen ? (
                 <span className="navigation-toggle-open">
                   <svg width="24" height="24" viewBox="0 0 24 24">
@@ -54,15 +47,40 @@ const Navigation = () => {
               )}
             </button>
 
-            {/* Menu Links */}
             <div className={`navigation-menu ${isMenuOpen ? 'open' : ''}`}>
               <div className="navigation-menu-backdrop" onClick={() => setIsMenuOpen(false)}></div>
               <ul className="navigation-list">
-                <NavItem href="/" text="Home" />
-                <NavItem href="#mission" text="Our Mission" />
-                <NavItem href="#events" text="Events & Festivals" />
-                <NavItem href="#gallery" text="Gallery" />
-                <NavItem href="#magazine" text="Durbar Darpan" />
+                {/* 3. Pass active state and click handler to NavItems */}
+                <NavItem 
+                  href="/" 
+                  text="Home" 
+                  isActive={activeLink === 'Home'} 
+                  onClick={() => handleNavLinkClick('Home')} 
+                />
+                <NavItem 
+                  href="#Mission" 
+                  text="Our Mission" 
+                  isActive={activeLink === 'Our Mission'} 
+                  onClick={() => handleNavLinkClick('Our Mission')} 
+                />
+                <NavItem 
+                  href="#Events" 
+                  text="Events & Festivals" 
+                  isActive={activeLink === 'Events & Festivals'} 
+                  onClick={() => handleNavLinkClick('Events & Festivals')} 
+                />
+                <NavItem 
+                  href="#Gallery" 
+                  text="Gallery" 
+                  isActive={activeLink === 'Gallery'} 
+                  onClick={() => handleNavLinkClick('Gallery')} 
+                />
+                <NavItem 
+                  href="#Magazine" 
+                  text="Durbar Darpan" 
+                  isActive={activeLink === 'Durbar Darpan'} 
+                  onClick={() => handleNavLinkClick('Durbar Darpan')} 
+                />
               </ul>
             </div>
           </div>
@@ -72,14 +90,16 @@ const Navigation = () => {
   );
 };
 
-// Sub-component for cleaner list items
-const NavItem = ({ href, text }) => (
+// 4. Update sub-component to receive and use isActive
+const NavItem = ({ href, text, isActive, onClick }) => (
   <li className="navigation-item">
-    <a href={href}>
-      <div className="navigation-link">
-        <span className="navigation-link-text">{text}</span>
-        <span className="navigation-link-accent"></span>
-      </div>
+    <a 
+      href={href} 
+      onClick={onClick} 
+      className={`navigation-link ${isActive ? 'active' : ''}`}
+    >
+      <span className="navigation-link-text">{text}</span>
+      <span className="navigation-link-accent"></span>
     </a>
   </li>
 );
