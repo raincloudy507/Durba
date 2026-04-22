@@ -11,10 +11,10 @@ const Navigation = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   // 2. Function to handle link clicks
-  const handleNavLinkClick = (text) => {
-    setActiveLink(text);
-    setIsMenuOpen(false); // Close mobile menu when a link is clicked
-  };
+  // const handleNavLinkClick = (text) => {
+  //   setActiveLink(text);
+  //   setIsMenuOpen(false); // Close mobile menu when a link is clicked
+  // };
 
     // ✅ Scroll lock
   useEffect(() => {
