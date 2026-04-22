@@ -11,7 +11,7 @@ const Events = () => {
         </h2>
         <p class="section-subtitle">Celebrate, Create, Connect</p>
         <div class="events-layout">
-          <article role="article" aria-labelledby="main-event-title" aria-describedby="main-event-description"
+          <article aria-labelledby="main-event-title" aria-describedby="main-event-description"
             class="card card--featured">
             <div class="card__image">
               <img
@@ -59,7 +59,7 @@ const Events = () => {
             </div>
           </article>
  
-          <article role="article" aria-labelledby="event-saraswati-title" class="card card--compact">
+          <article aria-labelledby="event-saraswati-title" class="card card--compact">
             <div class="card__image-compact">
                  <img
                   src="https://images.pexels.com/photos/13271550/pexels-photo-13271550.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
@@ -80,7 +80,7 @@ const Events = () => {
             </article>
 
 {/*         <div class="events-support">
-            <article role="article" aria-labelledby="event-diwali-title" class="card card--compact">
+            <article aria-labelledby="event-diwali-title" class="card card--compact">
               <div class="card__image-compact">
                 <img
                   src="https://images.pexels.com/photos/8818585/pexels-photo-8818585.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
@@ -100,7 +100,7 @@ const Events = () => {
                 </button>
               </div>
             </article>
-            <article role="article" aria-labelledby="event-lakshmi-title" class="card card--compact">
+            <article aria-labelledby="event-lakshmi-title" class="card card--compact">
               <div class="card__image-compact">
                 <img
                   src="https://images.pexels.com/photos/6138896/pexels-photo-6138896.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
@@ -120,7 +120,7 @@ const Events = () => {
                 </button>
               </div>
             </article>
-            <article role="article" class="card card--compact card--cta">
+            <article class="card card--compact card--cta">
               <div class="card__cta-content">
                 <h3 class="card__cta-title">Reserve your place</h3>
                 <p class="card__cta-text">
