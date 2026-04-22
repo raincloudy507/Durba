@@ -5,16 +5,16 @@ import './Navigation.css';
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // 1. Add state to track the active link
-  // const [activeLink, setActiveLink] = useState('Home');
+  const [setActiveLink] = useState('Home');
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
 
   // 2. Function to handle link clicks
-  // const handleNavLinkClick = (text) => {
-  //   setActiveLink(text);
-  //   setIsMenuOpen(false); // Close mobile menu when a link is clicked
-  // };
+  const handleNavLinkClick = (text) => {
+    setActiveLink(text);
+    setIsMenuOpen(false); // Close mobile menu when a link is clicked
+  };
 
     // ✅ Scroll lock
   useEffect(() => {
