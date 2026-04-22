@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Footer.css';
 
 
@@ -10,10 +10,10 @@ const Footer = () => {
 	// const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	// 2. Function to handle link clicks
-{/*    const handleNavLinkClick = (text) => {
-		setActiveLink(text);
-		setIsMenuOpen(false); // Close mobile menu when a link is clicked
-	}; */}
+// {/*    const handleNavLinkClick = (text) => {
+// 		setActiveLink(text);
+// 		setIsMenuOpen(false); // Close mobile menu when a link is clicked
+// 	}; */}
 
 	return (
 		<footer-wrapper className="footer-container">
@@ -198,17 +198,17 @@ const Footer = () => {
 	);
 };
 
-{/* const NavItem = ({ href, text, isActive, onClick }) => (
-	<li className="navigation-item">
-		<a
-			href={href}
-			onClick={onClick}
-			className={`navigation-link ${isActive ? 'active' : ''}`}
-		>
-			<span className="navigation-link-text">{text}</span>
-			<span className="navigation-link-accent"></span>
-		</a>
-	</li>
-); */}
+// {/* const NavItem = ({ href, text, isActive, onClick }) => (
+// 	<li className="navigation-item">
+// 		<a
+// 			href={href}
+// 			onClick={onClick}
+// 			className={`navigation-link ${isActive ? 'active' : ''}`}
+// 		>
+// 			<span className="navigation-link-text">{text}</span>
+// 			<span className="navigation-link-accent"></span>
+// 		</a>
+// 	</li>
+// ); */}
 
 export default Footer;
