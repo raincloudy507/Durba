@@ -1,8 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Footer.css';
+import PrivacyPolicy from './Privacy_policy';
+import TermsOfService from './Terms_of_service';
 
 
 const Footer = () => {
+	const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+	const togglePrivacy = (e) => {
+    	e.preventDefault(); // Prevents the #Homepage jump
+    	setIsPrivacyOpen(!isPrivacyOpen);
+  	};
+
+	const [isTermsOpen, setIsTermsOpen] = useState(false);
+	const toggleTerms = (e) => {
+		e.preventDefault(); // Prevents the #Homepage jump
+		setIsTermsOpen(!isTermsOpen);
+  	};
 	// const [isMenuOpen, setIsMenuOpen] = useState(false);
 	// 1. Add state to track the active link
 	// const [activeLink, setActiveLink] = useState('Home');
@@ -21,7 +34,7 @@ const Footer = () => {
 				<div className="footer-container-2">
 					{/* <div className="footer-container-3"></div> */}
 					<footer id='footer-durba' className='footer-main'>
-						<div class="footer-decorative-pattern"></div>
+						{/* <div class="footer-decorative-pattern"></div> */}
 						<div className="footer-content-wrapper">
 							<div className="footer-primary-section">
 								<div className="footer-brand-column">
@@ -70,23 +83,23 @@ const Footer = () => {
 											</a>
 										</li>
 										<li className='footer-link-item'>
-											<a href='#Mission'>
+											<a href='#Events'>
 												<div className='footer-link'>
 													<span> Events Calendar </span>
 												</div>
 											</a>
 										</li>
-										<li className='footer-link-item'>
+										{/* <li className='footer-link-item'>
 											<a href='#Mission'>
 												<div className='footer-link'>
 													<span> Get Involved </span>
 												</div>
 											</a>
-										</li>
+										</li> */}
 										<li className='footer-link-item'>
 											<a href='#Mission'>
 												<div className='footer-link'>
-													<span> Durbar Darpan </span>
+													<span> দুর্বার দর্পন (Durbar Darpan) </span>
 												</div>
 											</a>
 										</li>
@@ -120,7 +133,7 @@ const Footer = () => {
 											</div>
 											<div class="footer-contact-text">
 												<span class="footer-contact-label">Email</span>
-												<span class="footer-contact-value"> info@durbafoundation.org </span>
+												<span class="footer-contact-value"> durba.foundation@gmail.com </span>
 											</div>
 										</div>
 										<div class="footer-contact-item">
@@ -145,19 +158,46 @@ const Footer = () => {
 										Registered Non-Profit Organization in Canada.
 									</p>
 									<div class="footer-legal-links">
-										<a href="#Homepage">
+										{/* Trigger the privacy pop-up here */}
+										<a href="/PrivacyPolicy" onClick={togglePrivacy}>
 											<div class="footer-legal-link">
 												<span>Privacy Policy</span>
 											</div>
 										</a>
 										<span class="footer-legal-separator">|</span>
-										<a href="#Homepage">
+										{/* Trigger the Terms of Service pop-up here */}
+										<a href="#TermsOfService" onClick={toggleTerms}>
 											<div class="footer-legal-link">
 												<span>Terms of Service</span>
 											</div>
 										</a>
 									</div>
 								</div>
+								{/* The Pop-up Modal for Privacy Policy */}
+      							{isPrivacyOpen && (
+        							<div className="modal-overlay" onClick={togglePrivacy}>
+          								<div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            								<button className="close-button" onClick={togglePrivacy}>&times;</button>
+            								<h2>Privacy Policy</h2>
+            								<div className="modal-body">
+												<PrivacyPolicy />
+            								</div>
+						  				</div>
+									</div>	
+								)}									
+								{/* The Pop-up Modal for Terms of Service */}
+      							{isTermsOpen && (
+        							<div className="modal-overlay" onClick={toggleTerms}>
+          								<div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            								<button className="close-button" onClick={toggleTerms}>&times;</button>
+            								<h2>Terms of Service</h2>
+            								<div className="modal-body">
+												<TermsOfService />
+            								</div>
+						  				</div>
+									</div>	
+								)}									
+
 							</div>
 						</div>
 					</footer>
