@@ -49,7 +49,7 @@ const Mission = () => {
           <button aria-label="Join Durba Foundation and support our heritage" className="btn btn-primary">
                 Join Us
           </button>
-          <a href="#">
+          <a href="#Mission">
              <div className="btn btn-link"><span>Learn More</span></div>
           </a>
           </div>
