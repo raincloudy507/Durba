@@ -5,15 +5,15 @@ import './Footer.css';
 const Footer = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	// 1. Add state to track the active link
-	const [activeLink, setActiveLink] = useState('Home');
+	// const [activeLink, setActiveLink] = useState('Home');
 
-	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+	// const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	// 2. Function to handle link clicks
-	const handleNavLinkClick = (text) => {
+	{/* const handleNavLinkClick = (text) => {
 		setActiveLink(text);
 		setIsMenuOpen(false); // Close mobile menu when a link is clicked
-	};
+	}; */}
 
 	return (
 		<footer-wrapper className="footer-container">
@@ -198,7 +198,7 @@ const Footer = () => {
 	);
 };
 
-const NavItem = ({ href, text, isActive, onClick }) => (
+{/*const NavItem = ({ href, text, isActive, onClick }) => (
 	<li className="navigation-item">
 		<a
 			href={href}
@@ -209,6 +209,6 @@ const NavItem = ({ href, text, isActive, onClick }) => (
 			<span className="navigation-link-accent"></span>
 		</a>
 	</li>
-);
+); */}
 
 export default Footer;
