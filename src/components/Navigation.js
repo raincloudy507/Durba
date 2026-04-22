@@ -77,9 +77,9 @@ const Navigation = () => {
                 />
                 <NavItem 
                   href="#Magazine" 
-                  text="Durbar Darpan" 
-                  isActive={activeLink === 'Durbar Darpan'} 
-                  onClick={() => handleNavLinkClick('Durbar Darpan')} 
+                  text="দুর্বার দর্পন (Durbar Darpan)" 
+                  isActive={activeLink === 'দুর্বার দর্পন (Durbar Darpan)'} 
+                  onClick={() => handleNavLinkClick('দুর্বার দর্পন (Durbar Darpan)')} 
                 />
               </ul>
             </div>
