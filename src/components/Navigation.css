@@ -1,3 +1,6 @@
+:root {
+  --nav-height: 0px;
+}
 
 .navigation {
   top: 0;
@@ -8,7 +11,7 @@
   transition: all 0.4s var(--animation-curve-primary);
   border-bottom: 1px solid
       color-mix(in srgb, var(--color-border) 40%, transparent);
-  backdrop-filter: blur(12px) saturate(180%);
+  
 }
 
 .navigation-wrapper {
@@ -16,7 +19,7 @@
   top: 0;            /* Pins it exactly to the top */
   left: 0;           /* Pins it to the left edge */
   width: 100%;       /* Ensures it stretches across the screen */
-  z-index: 1000;     /* Ensures it stays above all other content */
+  z-index: 9999;     /* Ensures it stays above all other content */
   background-color: #fff; /* Ensure it has a solid background so content doesn't show through */
 }
 
@@ -48,7 +51,7 @@
   cursor: pointer;
   height: 44px;
   display: none;
-  z-index: 102;
+  z-index: 1100;
   position: relative;
   background: var(--color-surface-elevated);
   box-shadow: var(--shadow-level-1);
@@ -61,6 +64,8 @@
 .navigation-menu {
   display: flex;
   align-items: center;
+  position: fixed;
+  z-index: 1000;
 }
  
 .navigation-logo-icon {
@@ -106,6 +111,7 @@
  
 .navigation-menu-backdrop {
   display: none;
+  z-index: 999;
 }
  
 .navigation-list {
@@ -1903,24 +1909,26 @@
   .navigation-toggle {
     display: flex;
   }
+
   .navigation-menu {
-    top: 0;
-    right: 0;
-    width: 100%;
-    bottom: 0;
-    z-index: 101;
-    position: fixed;
-    max-width: 320px;
-    transform: translateX(100%);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-level-3);
-    overflow-y: auto;
-    transition: transform 0.4s var(--animation-curve-primary);
+  top: 0;
+  right: 0;
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+  max-width: 320px;
+  transform: translateX(100%); /* start off-screen RIGHT */
+  background: var(--color-surface);
+  box-shadow: var(--shadow-level-3);
+  overflow-y: auto;
+  transition: transform 0.4s var(--animation-curve-primary);
   }
-  .navigation-menu.navigation-menu-active {
+  
+  .navigation-menu.open {
     transform: translateX(0);
   }
-  .navigation-menu.navigation-menu-active .navigation-menu-backdrop {
+  
+  .navigation-menu.navigation-menu.open .navigation-menu-backdrop {
     opacity: 1;
     pointer-events: auto;
   }
@@ -1932,7 +1940,7 @@
     inset: 0;
     display: block;
     opacity: 0;
-    z-index: 100;
+    z-index: 999;
     position: fixed;
     background: color-mix(in srgb, var(--color-scrim) 60%, transparent);
     transition: opacity 0.4s var(--animation-curve-primary);
@@ -2287,4 +2295,104 @@
   .pathway-options {
     padding: var(--spacing-md);
   }
+}
+
+/* ===== MOBILE NAV ROOT ===== */
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Enable interaction when open */
+.mobile-nav.open {
+  pointer-events: auto;
+}
+
+/* ===== BACKDROP ===== */
+.mobile-nav-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  top: var(--nav-height);
+}
+
+/* Fade in backdrop */
+.mobile-nav.open .mobile-nav-backdrop {
+  opacity: 1;
+}
+
+/* ===== DRAWER ===== */
+.mobile-nav-drawer {
+  position: absolute;
+  top: var(--nav-height);
+  right: 0;
+  width: 80%;
+  max-width: 320px;
+  height: calc(100% - var(--nav-height));
+  background: white;
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
+
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+}
+
+/* Slide in */
+.mobile-nav.open .mobile-nav-drawer {
+  transform: translateX(0);
+}
+
+/* ===== LINKS ===== */
+.mobile-nav a {
+  display: block;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.mobile-nav-logo {
+  color: var(--color-on-primary);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-accent) 100%
+    );
+  box-shadow: var(--shadow-level-2);
+  transition: all 0.4s var(--animation-curve-primary);
+  align-items: center;
+  border-radius: var(--border-radius-lg);
+  justify-content: center;
+}
+ 
+.mobile-nav-logo-text {
+  gap: 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.mobile-nav-close {
+  color: #d31010;
+  align-self: flex-end;
+  font-size: 1.5rem;
+  /* background: none; */
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-level-1);
+  transition: all 0.3s var(--animation-curve-primary);
+  /* border: none; */
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  margin-bottom: 1rem;
+
 }
