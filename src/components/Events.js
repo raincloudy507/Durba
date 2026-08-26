@@ -22,7 +22,7 @@ const Events = () => {
   }, []);
 
   // The first future/current event is automatically the featured event.
-  const upcomingIndex = upcomingEvents.length > 0 ? 0 : -1;
+  // const upcomingIndex = upcomingEvents.length > 0 ? 0 : -1;
 
   // Keep carousel position within the available events.
   const activeIndex =
