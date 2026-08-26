@@ -15,7 +15,8 @@
 }
 
 .navigation-wrapper {
-  position: fixed;   /* Sticks the bar to the browser window */
+  /* position: fixed;   Sticks the bar to the browser window */
+  position: relative;  /* Makes it stick to the top when scrolling */
   top: 0;            /* Pins it exactly to the top */
   left: 0;           /* Pins it to the left edge */
   width: 100%;       /* Ensures it stretches across the screen */
