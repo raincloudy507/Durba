@@ -1,85 +1,228 @@
-import React, { useMemo, useState } from 'react';
-import events from '../data/events.js';
+import React, { useEffect, useMemo, useState } from 'react';
+import events from '../data/events';
 import './Homepage.css';
 
 const Events = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  /*
+   * ---------------------------------------------------------
+   * Keep ALL events in the carousel.
+   *
+   * events.js is the only file that needs to be maintained
+   * when adding or changing events.
+   * ---------------------------------------------------------
+   */
 
-  // Use today's date to determine which events are upcoming.
-  const upcomingEvents = useMemo(() => {
+  const allEvents = useMemo(() => {
+    return [...events].sort(
+      (a, b) =>
+        new Date(a.startDate) - new Date(b.startDate)
+    );
+  }, []);
+
+  /*
+   * ---------------------------------------------------------
+   * Current calendar date
+   *
+   * This value changes at midnight so the website can
+   * automatically recognize a new upcoming event without
+   * requiring a page refresh.
+   * ---------------------------------------------------------
+   */
+
+  const getDateKey = () => {
+    const today = new Date();
+
+    return `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, '0')}-${String(
+      today.getDate()
+    ).padStart(2, '0')}`;
+  };
+
+  const [todayKey, setTodayKey] = useState(getDateKey);
+
+  useEffect(() => {
+    /*
+     * Check periodically whether the calendar date has
+     * changed. This is useful if someone leaves the website
+     * open overnight.
+     */
+    const interval = setInterval(() => {
+      const newDateKey = getDateKey();
+
+      setTodayKey((currentDateKey) =>
+        currentDateKey !== newDateKey
+          ? newDateKey
+          : currentDateKey
+      );
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  /*
+   * ---------------------------------------------------------
+   * Determine the upcoming/current event
+   *
+   * An event remains current until its END date has passed.
+   *
+   * Example:
+   * Durga Puja = Oct 10–11
+   *
+   * It remains the upcoming/current event throughout
+   * October 10 and October 11.
+   * ---------------------------------------------------------
+   */
+
+  const upcomingIndex = useMemo(() => {
+    const today = new Date(`${todayKey}T00:00:00`);
+
+    return allEvents.findIndex((event) => {
+      const endDate = new Date(
+        `${event.endDate}T23:59:59`
+      );
+
+      return endDate >= today;
+    });
+  }, [allEvents, todayKey]);
+
+  /*
+   * ---------------------------------------------------------
+   * Carousel position
+   *
+   * Initially show the upcoming event.
+   * If every event has already passed, show the last event.
+   * ---------------------------------------------------------
+   */
+
+  const [currentIndex, setCurrentIndex] = useState(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    return events
-      .filter((event) => {
-        const endDate = new Date(`${event.endDate}T23:59:59`);
-        return endDate >= today;
-      })
-      .sort(
-        (a, b) =>
-          new Date(a.startDate) - new Date(b.startDate)
+    const index = allEvents.findIndex((event) => {
+      const endDate = new Date(
+        `${event.endDate}T23:59:59`
       );
-  }, []);
 
-  // The first future/current event is automatically the featured event.
-  // const upcomingIndex = upcomingEvents.length > 0 ? 0 : -1;
+      return endDate >= today;
+    });
 
-  // Keep carousel position within the available events.
+    return index >= 0
+      ? index
+      : Math.max(allEvents.length - 1, 0);
+  });
+
+  /*
+   * ---------------------------------------------------------
+   * When the calendar moves to a new day, automatically
+   * move the carousel to the new upcoming event.
+   *
+   * Example:
+   *
+   * Aug 26 → Durga Puja centered
+   * Oct 12 → next future event centered
+   * ---------------------------------------------------------
+   */
+
+  useEffect(() => {
+    if (upcomingIndex >= 0) {
+      setCurrentIndex(upcomingIndex);
+    }
+  }, [upcomingIndex]);
+
+  /*
+   * ---------------------------------------------------------
+   * Safety check if event data changes.
+   * ---------------------------------------------------------
+   */
+
   const activeIndex =
-    upcomingEvents.length > 0
-      ? Math.min(currentIndex, upcomingEvents.length - 1)
+    allEvents.length > 0
+      ? Math.min(currentIndex, allEvents.length - 1)
       : 0;
 
   const activeEvent =
-    upcomingEvents.length > 0
-      ? upcomingEvents[activeIndex]
+    allEvents.length > 0
+      ? allEvents[activeIndex]
       : null;
 
-  const getPreviousIndex = () => {
-    if (upcomingEvents.length <= 1) return 0;
+  /*
+   * Is the currently displayed event the dynamically
+   * determined upcoming event?
+   */
 
-    return (
-      (activeIndex - 1 + upcomingEvents.length) %
-      upcomingEvents.length
-    );
-  };
+  const isUpcoming =
+    upcomingIndex >= 0 &&
+    activeIndex === upcomingIndex;
 
-  const getNextIndex = () => {
-    if (upcomingEvents.length <= 1) return 0;
+  /*
+   * ---------------------------------------------------------
+   * Previous / Next indexes
+   *
+   * Circular navigation means users can browse ALL events.
+   * Past events are NOT removed.
+   * ---------------------------------------------------------
+   */
 
-    return (activeIndex + 1) % upcomingEvents.length;
-  };
+  const previousIndex =
+    allEvents.length > 1
+      ? (activeIndex - 1 + allEvents.length) %
+        allEvents.length
+      : -1;
+
+  const nextIndex =
+    allEvents.length > 1
+      ? (activeIndex + 1) % allEvents.length
+      : -1;
+
+  const previousEvent =
+    previousIndex >= 0
+      ? allEvents[previousIndex]
+      : null;
+
+  const nextEvent =
+    nextIndex >= 0
+      ? allEvents[nextIndex]
+      : null;
+
+  /*
+   * ---------------------------------------------------------
+   * Navigation
+   * ---------------------------------------------------------
+   */
 
   const goPrevious = () => {
-    if (upcomingEvents.length <= 1) return;
+    if (allEvents.length <= 1) {
+      return;
+    }
 
-    setCurrentIndex(getPreviousIndex());
+    setCurrentIndex(previousIndex);
   };
 
   const goNext = () => {
-    if (upcomingEvents.length <= 1) return;
+    if (allEvents.length <= 1) {
+      return;
+    }
 
-    setCurrentIndex(getNextIndex());
+    setCurrentIndex(nextIndex);
   };
+
+  /*
+   * ---------------------------------------------------------
+   * Format dates automatically
+   *
+   * Single day:
+   * Sunday, Aug 9, 2026
+   *
+   * Multiple days:
+   * Oct 10–11, 2026
+   * ---------------------------------------------------------
+   */
 
   const formatDate = (startDate, endDate) => {
     const start = new Date(`${startDate}T00:00:00`);
     const end = new Date(`${endDate}T00:00:00`);
 
-    const startMonth = start.toLocaleDateString('en-US', {
-      month: 'short',
-    });
-
-    const endMonth = end.toLocaleDateString('en-US', {
-      month: 'short',
-    });
-
-    const startDay = start.getDate();
-    const endDay = end.getDate();
-    const startYear = start.getFullYear();
-    const endYear = end.getFullYear();
-
-    // Single-day event
     if (startDate === endDate) {
       return start.toLocaleDateString('en-US', {
         weekday: 'long',
@@ -89,37 +232,94 @@ const Events = () => {
       });
     }
 
-    // Multi-day event in the same month/year
-    if (startMonth === endMonth && startYear === endYear) {
+    const startMonth = start.toLocaleDateString(
+      'en-US',
+      {
+        month: 'short',
+      }
+    );
+
+    const endMonth = end.toLocaleDateString(
+      'en-US',
+      {
+        month: 'short',
+      }
+    );
+
+    const startDay = start.getDate();
+    const endDay = end.getDate();
+
+    const startYear = start.getFullYear();
+    const endYear = end.getFullYear();
+
+    /*
+     * Same month and same year
+     */
+    if (
+      startMonth === endMonth &&
+      startYear === endYear
+    ) {
       return `${startMonth} ${startDay}–${endDay}, ${startYear}`;
     }
 
-    // Multi-day event across different months
+    /*
+     * Different months, same year
+     */
     if (startYear === endYear) {
       return `${startMonth} ${startDay} – ${endMonth} ${endDay}, ${startYear}`;
     }
 
+    /*
+     * Different years
+     */
     return `${startMonth} ${startDay}, ${startYear} – ${endMonth} ${endDay}, ${endYear}`;
   };
 
-  const getCardIndex = (offset) => {
-    if (upcomingEvents.length === 0) return -1;
+  /*
+   * ---------------------------------------------------------
+   * No events configured
+   * ---------------------------------------------------------
+   */
 
+  if (allEvents.length === 0) {
     return (
-      (activeIndex + offset + upcomingEvents.length) %
-      upcomingEvents.length
+      <section
+        aria-labelledby="upcoming-events-heading"
+        className="events-panel"
+        id="events"
+      >
+        <div className="events-panel-content">
+
+          <h2
+            id="upcoming-events-heading"
+            className="section-title"
+          >
+            DURBA Festivals &amp; Events
+          </h2>
+
+          <p className="section-subtitle">
+            Celebrate, Create, Connect
+          </p>
+
+          <div className="events-empty">
+            <h3>No events available</h3>
+
+            <p>
+              Please check back soon for upcoming
+              DURBA festivals and events.
+            </p>
+          </div>
+
+        </div>
+      </section>
     );
-  };
+  }
 
-  const previousEvent =
-    upcomingEvents.length > 1
-      ? upcomingEvents[getCardIndex(-1)]
-      : null;
-
-  const nextEvent =
-    upcomingEvents.length > 1
-      ? upcomingEvents[getCardIndex(1)]
-      : null;
+  /*
+   * ---------------------------------------------------------
+   * Main carousel
+   * ---------------------------------------------------------
+   */
 
   return (
     <section
@@ -140,89 +340,147 @@ const Events = () => {
           Celebrate, Create, Connect
         </p>
 
-        {upcomingEvents.length === 0 ? (
-          <div className="events-empty">
-            <h3>No upcoming events</h3>
-            <p>
-              Please check back soon for upcoming DURBA
-              festivals and events.
-            </p>
-          </div>
-        ) : (
-          <div className="events-carousel">
+        <div className="events-carousel">
 
-            {/* Previous Event */}
-            <button
-              type="button"
-              className="carousel-arrow carousel-arrow--left"
-              onClick={goPrevious}
-              aria-label="Previous event"
-              disabled={upcomingEvents.length <= 1}
-            >
-              &#10094;
-            </button>
+          {/* Previous arrow */}
 
-            <div className="events-carousel-track">
+          <button
+            type="button"
+            className="carousel-arrow carousel-arrow--left"
+            onClick={goPrevious}
+            disabled={allEvents.length <= 1}
+            aria-label="Previous event"
+          >
+            &#10094;
+          </button>
 
-              {/* Previous card */}
-              {previousEvent && (
-                <article
-                  className="card card--compact event-card event-card--side"
-                  aria-hidden="true"
-                >
-                  <div className="card__image-compact">
-                    <img
-                      src={previousEvent.image}
-                      alt=""
-                      loading="lazy"
-                    />
-                  </div>
+          <div className="events-carousel-track">
 
-                  <div className="card__content-compact">
-                    <span className="event-date-sm">
-                      {formatDate(
-                        previousEvent.startDate,
-                        previousEvent.endDate
-                      )}
-                    </span>
+            {/* =================================================
+                PREVIOUS EVENT
+                ================================================= */}
 
-                    <h3 className="card__title-sm">
-                      {previousEvent.title}
-                    </h3>
+            {previousEvent && (
+              <article
+                key={`previous-${previousEvent.id}`}
+                className="card card--compact event-card event-card--side"
+                aria-hidden="true"
+              >
+                <div className="card__image-compact">
 
-                    <p className="card__description-sm">
-                      {previousEvent.description}
-                    </p>
-                  </div>
-                </article>
-              )}
+                  <img
+                    src={previousEvent.image}
+                    alt=""
+                    loading="lazy"
+                  />
 
-              {/* Featured / Upcoming Event */}
-              {activeEvent && (
-                <article
-                  aria-labelledby="main-event-title"
-                  aria-describedby="main-event-description"
-                  className="card card--featured event-card event-card--active"
-                >
-                  <div className="card__image">
-                    <img
-                      src={activeEvent.image}
-                      alt={activeEvent.title}
-                      loading="eager"
-                    />
+                </div>
 
-                    <div className="card__overlay"></div>
+                <div className="card__content-compact">
 
+                  <span className="event-date-sm">
+                    {formatDate(
+                      previousEvent.startDate,
+                      previousEvent.endDate
+                    )}
+                  </span>
+
+                  <h3 className="card__title-sm">
+                    {previousEvent.title}
+                  </h3>
+
+                  <p className="card__description-sm">
+                    {previousEvent.description}
+                  </p>
+
+                </div>
+              </article>
+            )}
+
+            {/* =================================================
+                CENTER / FEATURED EVENT
+                ================================================= */}
+
+            {activeEvent && (
+              <article
+                key={`active-${activeEvent.id}`}
+                aria-labelledby="main-event-title"
+                aria-describedby="main-event-description"
+                className={`card card--featured event-card event-card--active ${
+                  isUpcoming
+                    ? 'event-card--upcoming'
+                    : ''
+                }`}
+              >
+
+                <div className="card__image">
+
+                  <img
+                    src={activeEvent.image}
+                    alt={activeEvent.title}
+                    loading="eager"
+                  />
+
+                  <div className="card__overlay"></div>
+
+                  {isUpcoming && (
                     <span className="event-upcoming-badge">
                       UPCOMING
                     </span>
-                  </div>
+                  )}
 
-                  <div className="card__content">
+                </div>
 
-                    <div className="event-meta">
+                <div className="card__content">
 
-                      <span className="event-date">
+                  <div className="event-meta">
+
+                    {/* Date */}
+
+                    <span className="event-date">
+
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <g
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        >
+                          <path d="M8 2v4m8-4v4" />
+
+                          <rect
+                            width="18"
+                            height="18"
+                            x="3"
+                            y="4"
+                            rx="2"
+                          />
+
+                          <path d="M3 10h18" />
+                        </g>
+                      </svg>
+
+                      <span>
+                        {formatDate(
+                          activeEvent.startDate,
+                          activeEvent.endDate
+                        )}
+                      </span>
+
+                    </span>
+
+                    {/* Location */}
+
+                    {activeEvent.location && (
+                      <span className="event-location">
+
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -230,158 +488,142 @@ const Events = () => {
                           viewBox="0 0 24 24"
                           aria-hidden="true"
                         >
-                          <g
+                          <path
                             fill="none"
                             stroke="currentColor"
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth="2"
-                          >
-                            <path d="M8 2v4m8-4v4" />
-                            <rect
-                              width="18"
-                              height="18"
-                              x="3"
-                              y="4"
-                              rx="2"
-                            />
-                            <path d="M3 10h18" />
-                          </g>
+                            d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
+                          />
+
+                          <circle
+                            cx="12"
+                            cy="9"
+                            r="2"
+                          />
                         </svg>
 
                         <span>
-                          {formatDate(
-                            activeEvent.startDate,
-                            activeEvent.endDate
-                          )}
+                          {activeEvent.location}
                         </span>
+
                       </span>
-
-                      {activeEvent.location && (
-                        <span className="event-location">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill="none"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
-                            />
-                            <circle
-                              cx="12"
-                              cy="9"
-                              r="2"
-                            />
-                          </svg>
-
-                          <span>
-                            {activeEvent.location}
-                          </span>
-                        </span>
-                      )}
-
-                    </div>
-
-                    <h3
-                      id="main-event-title"
-                      className="card__title"
-                    >
-                      {activeEvent.title}
-                    </h3>
-
-                    <p
-                      id="main-event-description"
-                      className="card__description"
-                    >
-                      {activeEvent.description}
-                    </p>
+                    )}
 
                   </div>
-                </article>
-              )}
 
-              {/* Next card */}
-              {nextEvent && (
-                <article
-                  className="card card--compact event-card event-card--side"
-                  aria-hidden="true"
-                >
-                  <div className="card__image-compact">
-                    <img
-                      src={nextEvent.image}
-                      alt=""
-                      loading="lazy"
-                    />
-                  </div>
+                  <h3
+                    id="main-event-title"
+                    className="card__title"
+                  >
+                    {activeEvent.title}
+                  </h3>
 
-                  <div className="card__content-compact">
-                    <span className="event-date-sm">
-                      {formatDate(
-                        nextEvent.startDate,
-                        nextEvent.endDate
-                      )}
-                    </span>
+                  <p
+                    id="main-event-description"
+                    className="card__description"
+                  >
+                    {activeEvent.description}
+                  </p>
 
-                    <h3 className="card__title-sm">
-                      {nextEvent.title}
-                    </h3>
+                </div>
 
-                    <p className="card__description-sm">
-                      {nextEvent.description}
-                    </p>
-                  </div>
-                </article>
-              )}
+              </article>
+            )}
 
-            </div>
+            {/* =================================================
+                NEXT EVENT
+                ================================================= */}
 
-            {/* Next Event */}
-            <button
-              type="button"
-              className="carousel-arrow carousel-arrow--right"
-              onClick={goNext}
-              aria-label="Next event"
-              disabled={upcomingEvents.length <= 1}
-            >
-              &#10095;
-            </button>
-
-            {/* Carousel indicators */}
-            {upcomingEvents.length > 1 && (
-              <div
-                className="events-carousel-dots"
-                role="tablist"
-                aria-label="Events"
+            {nextEvent && (
+              <article
+                key={`next-${nextEvent.id}`}
+                className="card card--compact event-card event-card--side"
+                aria-hidden="true"
               >
-                {upcomingEvents.map((event, index) => (
-                  <button
-                    key={event.id}
-                    type="button"
-                    className={`carousel-dot ${
-                      index === activeIndex
-                        ? 'carousel-dot--active'
-                        : ''
-                    }`}
-                    onClick={() => setCurrentIndex(index)}
-                    aria-label={`Show ${event.title}`}
-                    aria-selected={
-                      index === activeIndex
-                    }
-                    role="tab"
+
+                <div className="card__image-compact">
+
+                  <img
+                    src={nextEvent.image}
+                    alt=""
+                    loading="lazy"
                   />
-                ))}
-              </div>
+
+                </div>
+
+                <div className="card__content-compact">
+
+                  <span className="event-date-sm">
+                    {formatDate(
+                      nextEvent.startDate,
+                      nextEvent.endDate
+                    )}
+                  </span>
+
+                  <h3 className="card__title-sm">
+                    {nextEvent.title}
+                  </h3>
+
+                  <p className="card__description-sm">
+                    {nextEvent.description}
+                  </p>
+
+                </div>
+
+              </article>
             )}
 
           </div>
-        )}
+
+          {/* Next arrow */}
+
+          <button
+            type="button"
+            className="carousel-arrow carousel-arrow--right"
+            onClick={goNext}
+            disabled={allEvents.length <= 1}
+            aria-label="Next event"
+          >
+            &#10095;
+          </button>
+
+          {/* =================================================
+              CAROUSEL DOTS
+              ================================================= */}
+
+          {allEvents.length > 1 && (
+            <div
+              className="events-carousel-dots"
+              role="tablist"
+              aria-label="DURBA events"
+            >
+
+              {allEvents.map((event, index) => (
+                <button
+                  key={event.id}
+                  type="button"
+                  className={`carousel-dot ${
+                    index === activeIndex
+                      ? 'carousel-dot--active'
+                      : ''
+                  }`}
+                  onClick={() =>
+                    setCurrentIndex(index)
+                  }
+                  aria-label={`Show ${event.title}`}
+                  aria-selected={
+                    index === activeIndex
+                  }
+                  role="tab"
+                />
+              ))}
+
+            </div>
+          )}
+
+        </div>
 
       </div>
     </section>
