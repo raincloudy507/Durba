@@ -3099,3 +3099,401 @@
     padding: var(--spacing-md);
   }
 }
+/* =========================================================
+   DURBA EVENTS CAROUSEL
+   ========================================================= */
+
+.events-carousel {
+  position: relative;
+  width: 100%;
+  margin: 2rem auto 0;
+  overflow: hidden;
+}
+
+.events-carousel-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  min-height: 520px;
+  padding: 2rem 5rem;
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+   Event Cards
+   --------------------------------------------------------- */
+
+.event-card {
+  flex: 0 0 auto;
+  transition:
+    transform 0.45s ease,
+    opacity 0.45s ease,
+    filter 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.event-card--active {
+  width: min(520px, 55vw);
+  min-height: 480px;
+  transform: scale(1);
+  opacity: 1;
+  z-index: 3;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+}
+
+.event-card--side {
+  width: min(300px, 28vw);
+  min-height: 390px;
+  transform: scale(0.82);
+  opacity: 0.65;
+  filter: saturate(0.75);
+  z-index: 1;
+}
+
+.event-card--side:hover {
+  opacity: 0.85;
+  filter: saturate(1);
+  transform: scale(0.86);
+}
+
+/* ---------------------------------------------------------
+   Featured Event Image
+   --------------------------------------------------------- */
+
+.event-card--active .card__image {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.event-card--active .card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.event-card--active:hover .card__image img {
+  transform: scale(1.04);
+}
+
+/* ---------------------------------------------------------
+   Side Event Images
+   --------------------------------------------------------- */
+
+.event-card--side .card__image-compact {
+  height: 210px;
+  overflow: hidden;
+}
+
+.event-card--side .card__image-compact img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------------------------------------------------------
+   Upcoming Badge
+   --------------------------------------------------------- */
+
+.event-upcoming-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+
+  padding: 0.45rem 0.8rem;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #7a1f1f;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* ---------------------------------------------------------
+   Event Meta
+   --------------------------------------------------------- */
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.8rem;
+}
+
+.event-date,
+.event-location {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.event-location {
+  line-height: 1.4;
+}
+
+/* ---------------------------------------------------------
+   Carousel Navigation Arrows
+   --------------------------------------------------------- */
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  font-size: 1.4rem;
+  line-height: 1;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+
+  transform: translateY(-50%);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.25);
+}
+
+.carousel-arrow:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.carousel-arrow:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.carousel-arrow--left {
+  left: 1rem;
+}
+
+.carousel-arrow--right {
+  right: 1rem;
+}
+
+/* ---------------------------------------------------------
+   Carousel Dots
+   --------------------------------------------------------- */
+
+.events-carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+
+  margin-top: 1rem;
+}
+
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  background: currentColor;
+  opacity: 0.3;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.carousel-dot:hover {
+  opacity: 0.65;
+}
+
+.carousel-dot--active {
+  transform: scale(1.45);
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------
+   No Upcoming Events
+   --------------------------------------------------------- */
+
+.events-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 280px;
+
+  padding: 3rem 2rem;
+
+  text-align: center;
+}
+
+.events-empty h3 {
+  margin: 0 0 0.75rem;
+}
+
+.events-empty p {
+  margin: 0;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .events-carousel-track {
+    gap: 1rem;
+    padding: 2rem 3.5rem;
+  }
+
+  .event-card--active {
+    width: min(480px, 62vw);
+  }
+
+  .event-card--side {
+    width: min(230px, 24vw);
+  }
+
+  .event-card--active .card__image {
+    height: 250px;
+  }
+
+  .carousel-arrow--left {
+    left: 0.5rem;
+  }
+
+  .carousel-arrow--right {
+    right: 0.5rem;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .events-carousel {
+    overflow: hidden;
+  }
+
+  .events-carousel-track {
+    min-height: auto;
+    padding: 1rem 3.25rem 1.5rem;
+    gap: 0;
+  }
+
+  /*
+   * On mobile we show only the upcoming event.
+   * The arrows/dots still allow navigation.
+   */
+  .event-card--active {
+    width: 100%;
+    min-height: 0;
+
+    transform: scale(1);
+  }
+
+  .event-card--side {
+    display: none;
+  }
+
+  .event-card--active .card__image {
+    height: 230px;
+  }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+  }
+
+  .carousel-arrow--left {
+    left: 0.35rem;
+  }
+
+  .carousel-arrow--right {
+    right: 0.35rem;
+  }
+
+  .event-upcoming-badge {
+    top: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.65rem;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .events-carousel-track {
+    padding-left: 2.75rem;
+    padding-right: 2.75rem;
+  }
+
+  .event-card--active .card__image {
+    height: 200px;
+  }
+
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .event-meta {
+    font-size: 0.85rem;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.carousel-arrow:focus-visible,
+.carousel-dot:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-card,
+  .event-card--active .card__image img,
+  .carousel-arrow,
+  .carousel-dot {
+    transition: none;
+  }
+}

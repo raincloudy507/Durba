@@ -1,139 +1,388 @@
-import React from 'react';
-// import './style.css';
+import React, { useMemo, useState } from 'react';
+import events from './data/events';
 import './Homepage.css';
 
 const Events = () => {
-  return (
-    <section aria-labelledby="upcoming-events-heading" className="events-panel" id="events">
-      <div className="events-panel-content">
-        <h2 id="upcoming-events-heading" class="section-title">
-          DURBA Festivals &amp; Events this year
-        </h2>
-        <p class="section-subtitle">Celebrate, Create, Connect</p>
-        <div class="events-layout">
-          <article aria-labelledby="main-event-title" aria-describedby="main-event-description"
-            class="card card--featured">
-            <div class="card__image">
-              <img
-                src="/picnic.jpg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
-                alt="DURBA picnic" loading="lazy" />
-              <div class="card__overlay"></div>
-            </div>
-            <div class="card__content">
-              <div class="event-meta">
-                <span class="event-date">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2">
-                      <path d="M8 2v4m8-4v4"></path>
-                      <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                      <path d="M3 10h18"></path>
-                    </g>
-                  </svg>
-                  <span>Oct 10–11, 2026</span>
-                </span>
-                <span class="event-location">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0zm.894.211v15M9 3.236v15">
-                    </path>
-                  </svg>
-                  <span>GTA</span>
-                </span>
-              </div>
-              <h3 id="main-event-title" class="card__title">DURBA Picnic 2026</h3>
-              <p id="main-event-description" class="card__description">
-                Come and celebrate the joy of summer with us at DURBA picnic !
-              </p>
-              {/*<div class="card__actions">
-                <button aria-label="RSVP for Durga Puja event" class="btn btn-primary btn-sm">
-                  RSVP
-                </button>
-                <button aria-label="Donate to Durga Puja" class="btn btn-sm btn-accent">
-                  Donate
-                </button>
-              </div> */}
-            </div>
-          </article>
- 
-          <article aria-labelledby="event-saraswati-title" class="card card--compact">
-            <div class="card__image-compact">
-                 <img
-                  src="https://images.pexels.com/photos/13271550/pexels-photo-13271550.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
-                  alt="Durga Puja celebration with vibrant idol" loading="lazy" />
-            </div>
-              <div class="card__content-compact">
-                <span class="event-date-sm">Jan 24, 2026</span>
-                <h3 id="event-saraswati-title" class="card__title-sm">
-                  Durga Puja 2026
-                </h3>
-                <p class="card__description-sm">
-                  A vibrant celebration of art, culture, and community spirit through Durba's signature Durga Puja festivities.
-                </p>
-{/*}                <button aria-label="RSVP for Saraswati Puja event" class="btn btn-primary btn-sm">
-                  RSVP
-                </button> */}
-              </div>
-            </article>
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-{/*         <div class="events-support">
-            <article aria-labelledby="event-diwali-title" class="card card--compact">
-              <div class="card__image-compact">
-                <img
-                  src="https://images.pexels.com/photos/8818585/pexels-photo-8818585.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
-                  alt="Diwali celebration with sparklers" loading="lazy" />
+  // Use today's date to determine which events are upcoming.
+  const upcomingEvents = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return events
+      .filter((event) => {
+        const endDate = new Date(`${event.endDate}T23:59:59`);
+        return endDate >= today;
+      })
+      .sort(
+        (a, b) =>
+          new Date(a.startDate) - new Date(b.startDate)
+      );
+  }, []);
+
+  // The first future/current event is automatically the featured event.
+  const upcomingIndex = upcomingEvents.length > 0 ? 0 : -1;
+
+  // Keep carousel position within the available events.
+  const activeIndex =
+    upcomingEvents.length > 0
+      ? Math.min(currentIndex, upcomingEvents.length - 1)
+      : 0;
+
+  const activeEvent =
+    upcomingEvents.length > 0
+      ? upcomingEvents[activeIndex]
+      : null;
+
+  const getPreviousIndex = () => {
+    if (upcomingEvents.length <= 1) return 0;
+
+    return (
+      (activeIndex - 1 + upcomingEvents.length) %
+      upcomingEvents.length
+    );
+  };
+
+  const getNextIndex = () => {
+    if (upcomingEvents.length <= 1) return 0;
+
+    return (activeIndex + 1) % upcomingEvents.length;
+  };
+
+  const goPrevious = () => {
+    if (upcomingEvents.length <= 1) return;
+
+    setCurrentIndex(getPreviousIndex());
+  };
+
+  const goNext = () => {
+    if (upcomingEvents.length <= 1) return;
+
+    setCurrentIndex(getNextIndex());
+  };
+
+  const formatDate = (startDate, endDate) => {
+    const start = new Date(`${startDate}T00:00:00`);
+    const end = new Date(`${endDate}T00:00:00`);
+
+    const startMonth = start.toLocaleDateString('en-US', {
+      month: 'short',
+    });
+
+    const endMonth = end.toLocaleDateString('en-US', {
+      month: 'short',
+    });
+
+    const startDay = start.getDate();
+    const endDay = end.getDate();
+    const startYear = start.getFullYear();
+    const endYear = end.getFullYear();
+
+    // Single-day event
+    if (startDate === endDate) {
+      return start.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    }
+
+    // Multi-day event in the same month/year
+    if (startMonth === endMonth && startYear === endYear) {
+      return `${startMonth} ${startDay}–${endDay}, ${startYear}`;
+    }
+
+    // Multi-day event across different months
+    if (startYear === endYear) {
+      return `${startMonth} ${startDay} – ${endMonth} ${endDay}, ${startYear}`;
+    }
+
+    return `${startMonth} ${startDay}, ${startYear} – ${endMonth} ${endDay}, ${endYear}`;
+  };
+
+  const getCardIndex = (offset) => {
+    if (upcomingEvents.length === 0) return -1;
+
+    return (
+      (activeIndex + offset + upcomingEvents.length) %
+      upcomingEvents.length
+    );
+  };
+
+  const previousEvent =
+    upcomingEvents.length > 1
+      ? upcomingEvents[getCardIndex(-1)]
+      : null;
+
+  const nextEvent =
+    upcomingEvents.length > 1
+      ? upcomingEvents[getCardIndex(1)]
+      : null;
+
+  return (
+    <section
+      aria-labelledby="upcoming-events-heading"
+      className="events-panel"
+      id="events"
+    >
+      <div className="events-panel-content">
+
+        <h2
+          id="upcoming-events-heading"
+          className="section-title"
+        >
+          DURBA Festivals &amp; Events
+        </h2>
+
+        <p className="section-subtitle">
+          Celebrate, Create, Connect
+        </p>
+
+        {upcomingEvents.length === 0 ? (
+          <div className="events-empty">
+            <h3>No upcoming events</h3>
+            <p>
+              Please check back soon for upcoming DURBA
+              festivals and events.
+            </p>
+          </div>
+        ) : (
+          <div className="events-carousel">
+
+            {/* Previous Event */}
+            <button
+              type="button"
+              className="carousel-arrow carousel-arrow--left"
+              onClick={goPrevious}
+              aria-label="Previous event"
+              disabled={upcomingEvents.length <= 1}
+            >
+              &#10094;
+            </button>
+
+            <div className="events-carousel-track">
+
+              {/* Previous card */}
+              {previousEvent && (
+                <article
+                  className="card card--compact event-card event-card--side"
+                  aria-hidden="true"
+                >
+                  <div className="card__image-compact">
+                    <img
+                      src={previousEvent.image}
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <div className="card__content-compact">
+                    <span className="event-date-sm">
+                      {formatDate(
+                        previousEvent.startDate,
+                        previousEvent.endDate
+                      )}
+                    </span>
+
+                    <h3 className="card__title-sm">
+                      {previousEvent.title}
+                    </h3>
+
+                    <p className="card__description-sm">
+                      {previousEvent.description}
+                    </p>
+                  </div>
+                </article>
+              )}
+
+              {/* Featured / Upcoming Event */}
+              {activeEvent && (
+                <article
+                  aria-labelledby="main-event-title"
+                  aria-describedby="main-event-description"
+                  className="card card--featured event-card event-card--active"
+                >
+                  <div className="card__image">
+                    <img
+                      src={activeEvent.image}
+                      alt={activeEvent.title}
+                      loading="eager"
+                    />
+
+                    <div className="card__overlay"></div>
+
+                    <span className="event-upcoming-badge">
+                      UPCOMING
+                    </span>
+                  </div>
+
+                  <div className="card__content">
+
+                    <div className="event-meta">
+
+                      <span className="event-date">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <g
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                          >
+                            <path d="M8 2v4m8-4v4" />
+                            <rect
+                              width="18"
+                              height="18"
+                              x="3"
+                              y="4"
+                              rx="2"
+                            />
+                            <path d="M3 10h18" />
+                          </g>
+                        </svg>
+
+                        <span>
+                          {formatDate(
+                            activeEvent.startDate,
+                            activeEvent.endDate
+                          )}
+                        </span>
+                      </span>
+
+                      {activeEvent.location && (
+                        <span className="event-location">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
+                            />
+                            <circle
+                              cx="12"
+                              cy="9"
+                              r="2"
+                            />
+                          </svg>
+
+                          <span>
+                            {activeEvent.location}
+                          </span>
+                        </span>
+                      )}
+
+                    </div>
+
+                    <h3
+                      id="main-event-title"
+                      className="card__title"
+                    >
+                      {activeEvent.title}
+                    </h3>
+
+                    <p
+                      id="main-event-description"
+                      className="card__description"
+                    >
+                      {activeEvent.description}
+                    </p>
+
+                  </div>
+                </article>
+              )}
+
+              {/* Next card */}
+              {nextEvent && (
+                <article
+                  className="card card--compact event-card event-card--side"
+                  aria-hidden="true"
+                >
+                  <div className="card__image-compact">
+                    <img
+                      src={nextEvent.image}
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <div className="card__content-compact">
+                    <span className="event-date-sm">
+                      {formatDate(
+                        nextEvent.startDate,
+                        nextEvent.endDate
+                      )}
+                    </span>
+
+                    <h3 className="card__title-sm">
+                      {nextEvent.title}
+                    </h3>
+
+                    <p className="card__description-sm">
+                      {nextEvent.description}
+                    </p>
+                  </div>
+                </article>
+              )}
+
+            </div>
+
+            {/* Next Event */}
+            <button
+              type="button"
+              className="carousel-arrow carousel-arrow--right"
+              onClick={goNext}
+              aria-label="Next event"
+              disabled={upcomingEvents.length <= 1}
+            >
+              &#10095;
+            </button>
+
+            {/* Carousel indicators */}
+            {upcomingEvents.length > 1 && (
+              <div
+                className="events-carousel-dots"
+                role="tablist"
+                aria-label="Events"
+              >
+                {upcomingEvents.map((event, index) => (
+                  <button
+                    key={event.id}
+                    type="button"
+                    className={`carousel-dot ${
+                      index === activeIndex
+                        ? 'carousel-dot--active'
+                        : ''
+                    }`}
+                    onClick={() => setCurrentIndex(index)}
+                    aria-label={`Show ${event.title}`}
+                    aria-selected={
+                      index === activeIndex
+                    }
+                    role="tab"
+                  />
+                ))}
               </div>
-              <div class="card__content-compact">
-                <span class="event-date-sm">Nov 1, 2025</span>
-                <h3 id="event-diwali-title" class="card__title-sm">
-                  Diwali
-                </h3>
-                <p class="card__description-sm">
-                  A lantern-lit evening of light, music and contemporary
-                  Rangoli showcases.
-                </p>
-                <button aria-label="RSVP for Diwali event" class="btn btn-primary btn-sm">
-                  RSVP
-                </button>
-              </div>
-            </article>
-            <article aria-labelledby="event-lakshmi-title" class="card card--compact">
-              <div class="card__image-compact">
-                <img
-                  src="https://images.pexels.com/photos/6138896/pexels-photo-6138896.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
-                  alt="Lakshmi Puja with diyas" loading="lazy" />
-              </div>
-              <div class="card__content-compact">
-                <span class="event-date-sm">Nov 2, 2025</span>
-                <h3 id="event-lakshmi-title" class="card__title-sm">
-                  Lakshmi Puja
-                </h3>
-                <p class="card__description-sm">
-                  A ceremony blending traditional puja with guided creative
-                  meditations.
-                </p>
-                <button aria-label="RSVP for Lakshmi Puja event" class="btn btn-primary btn-sm">
-                  RSVP
-                </button>
-              </div>
-            </article>
-            <article class="card card--compact card--cta">
-              <div class="card__cta-content">
-                <h3 class="card__cta-title">Reserve your place</h3>
-                <p class="card__cta-text">
-                  Simple RSVP, Transparent Impact
-                </p>
-                <p class="section-content">
-                  Every ticket and donation supports ritual upkeep, artist
-                  stipends, and educational outreach across the GTA.
-                </p>
-              </div>
-            </article> 
-          </div>*/}
-        </div>
+            )}
+
+          </div>
+        )}
+
       </div>
     </section>
   );
