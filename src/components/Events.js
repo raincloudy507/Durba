@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import events from './data/events';
+import events from '../data/events.js';
 import './Homepage.css';
 
 const Events = () => {
