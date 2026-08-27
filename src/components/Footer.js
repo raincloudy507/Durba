@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import './Footer.css';
 import PrivacyPolicy from './Privacy_policy';
 import TermsOfService from './Terms_of_service';
-import { useState } from "react";
 
 const Footer = () => {
 	const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
