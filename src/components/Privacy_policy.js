@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 const [showPrivacy, setShowPrivacy] = useState(false);
 const PrivacyPolicy = () => {
