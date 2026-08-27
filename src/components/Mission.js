@@ -46,9 +46,14 @@ const Mission = () => {
             </p>
           </div>
           <div className="about-cta">
-          <button aria-label="Join Durba Foundation and support our heritage" className="btn btn-primary">
-                Checkout our events for this year
-          </button>
+            <a href= "#join">
+              <button aria-label="Join Durba Foundation and support our heritage" className="btn btn-primary">
+                Join Our Community
+              </button>
+            </a>
+            <a href= "#events">
+              <button className="btn btn-lg btn-outline" aria-label="View our upcoming events">Checkout our events for this year</button>
+            </a>
           </div>
         </div>
         <div className="about-video">
