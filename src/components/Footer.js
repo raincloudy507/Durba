@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './Footer.css';
 import PrivacyPolicy from './Privacy_policy';
 import TermsOfService from './Terms_of_service';
-
+import { useState } from "react";
 
 const Footer = () => {
 	const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
@@ -159,11 +159,18 @@ const Footer = () => {
 									</p>
 									<div class="footer-legal-links">
 										{/* Trigger the privacy pop-up here */}
-										<a href="/PrivacyPolicy" onClick={togglePrivacy}>
+										{/* <a href="/PrivacyPolicy" onClick={togglePrivacy}>
 											<div class="footer-legal-link">
 												<span>Privacy Policy</span>
 											</div>
-										</a>
+										</a> */}
+										<button
+										type="button"
+										className="footer-legal-link footer-legal-button"
+										onClick={() => setShowPrivacy(true)}
+										>
+										Privacy Policy
+										</button>
 										<span class="footer-legal-separator">|</span>
 										{/* Trigger the Terms of Service pop-up here */}
 										<a href="#TermsOfService" onClick={toggleTerms}>
@@ -173,82 +180,82 @@ const Footer = () => {
 										</a>
 									</div>
 								</div>
-								{/* The Pop-up Modal for Privacy Policy */}
-      							{isPrivacyOpen && (
-        							<div className="modal-overlay" onClick={togglePrivacy}>
-          								<div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            								<button className="close-button" onClick={togglePrivacy}>&times;</button>
-            								<h2>Privacy Policy</h2>
-            								<div className="modal-body">
-												<PrivacyPolicy />
-            								</div>
-						  				</div>
-									</div>	
-								)}									
-								{/* The Pop-up Modal for Terms of Service */}
-      							{isTermsOpen && (
-        							<div className="modal-overlay" onClick={toggleTerms}>
-          								<div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            								<button className="close-button" onClick={toggleTerms}>&times;</button>
-            								<h2>Terms of Service</h2>
-            								<div className="modal-body">
-												<TermsOfService />
-            								</div>
-						  				</div>
-									</div>	
-								)}									
-
 							</div>
 						</div>
+{showPrivacy && (
+  <div
+    className="privacy-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="privacy-modal-title"
+    onClick={() => setShowPrivacy(false)}
+  >
+    <div
+      className="privacy-modal-content"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        type="button"
+        className="privacy-modal-close"
+        aria-label="Close Privacy Policy"
+        onClick={() => setShowPrivacy(false)}
+      >
+        ×
+      </button>
+
+      <h2 id="privacy-modal-title">Privacy Policy</h2>
+
+      <div className="privacy-modal-body">
+        <p>
+          Your privacy is important to us. This website is operated by
+          DURBA for the purpose of sharing information about our community,
+          events, programs, and activities.
+        </p>
+
+        <h3>Information We Collect</h3>
+        <p>
+          We do not collect personal information through this website unless
+          you voluntarily provide it through a contact, registration, or
+          participation form.
+        </p>
+
+        <h3>How We Use Information</h3>
+        <p>
+          Information voluntarily provided to us may be used to respond to
+          inquiries, communicate about events and activities, and support
+          community programs.
+        </p>
+
+        <h3>Cookies and Analytics</h3>
+        <p>
+          This website may use basic cookies or analytics technologies to
+          understand website usage and improve the user experience.
+        </p>
+
+        <h3>Third-Party Services</h3>
+        <p>
+          Some website functionality may rely on third-party services.
+          Those services may have their own privacy policies governing the
+          information they collect.
+        </p>
+
+        <h3>Contact</h3>
+        <p>
+          If you have questions about this Privacy Policy or how information
+          is handled, please contact us through the contact information
+          provided on this website.
+        </p>
+      </div>
+    </div>
+  </div>
+)}
 					</footer>
 
-					{/*					<div className={`navigation-menu ${isMenuOpen ? 'open' : ''}`}>
-						<div className="navigation-menu-backdrop" onClick={() => setIsMenuOpen(false)}></div>
-						<ul className="navigation-list">
-							
-							<NavItem
-								href="/"
-								text="Home"
-								isActive={activeLink === 'Home'}
-								onClick={() => handleNavLinkClick('Home')}
-							/>
-							<NavItem
-								href="#Mission"
-								text="Our Mission"
-								isActive={activeLink === 'Our Mission'}
-								onClick={() => handleNavLinkClick('Our Mission')}
-							/>
-							<NavItem
-								href="#Events"
-								text="Events & Festivals"
-								isActive={activeLink === 'Events & Festivals'}
-								onClick={() => handleNavLinkClick('Events & Festivals')}
-							/>
-							<NavItem
-								href="#Magazine"
-								text="Durbar Darpan"
-								isActive={activeLink === 'Durbar Darpan'}
-								onClick={() => handleNavLinkClick('Durbar Darpan')}
-							/>
-						</ul>
-					</div> */}
 				</div>
 			</div>
 		</footer-wrapper>
 	);
 };
 
-// {/* const NavItem = ({ href, text, isActive, onClick }) => (
-// 	<li className="navigation-item">
-// 		<a
-// 			href={href}
-// 			onClick={onClick}
-// 			className={`navigation-link ${isActive ? 'active' : ''}`}
-// 		>
-// 			<span className="navigation-link-text">{text}</span>
-// 			<span className="navigation-link-accent"></span>
-// 		</a>
-// 	</li>
-// ); */}
 
 export default Footer;
