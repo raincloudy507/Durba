@@ -4,7 +4,7 @@ import './Footer.css';
 // import TermsOfService from './Terms_of_service';
 
 const Footer = () => {
-	const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+	// const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 	// const togglePrivacy = (e) => {
     // 	e.preventDefault(); // Prevents the #Homepage jump
     // 	setIsPrivacyOpen(!isPrivacyOpen);
