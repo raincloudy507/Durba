@@ -47,7 +47,9 @@ const Magazine = () => {
   }, []);
 
   useEffect(() => {
-    if (!readerOpen) return undefined;
+    if (!readerOpen) {
+      return undefined;
+    }
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -73,7 +75,7 @@ const Magazine = () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [readerOpen, goPrevious, goNext]);
+  }, [readerOpen, closeReader, goPrevious, goNext]);
 
   const pages = useMemo(() => {
     const secondPage = page + 1 <= TOTAL_PAGES ? page + 1 : null;
