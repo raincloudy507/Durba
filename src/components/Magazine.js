@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './Magazine.css';
 
 const TOTAL_PAGES = 63;
@@ -24,13 +24,13 @@ const Magazine = () => {
 
   const pageStep = isMobile ? 1 : 2;
 
-  const goPrevious = () => {
-    if (canPrevious) setPage((current) => Math.max(1, current - pageStep));
-  };
+  const goPrevious = useCallback(() => {
+    setCurrentPage((prev) => Math.max(1, prev - 1));
+  }, []);
 
-  const goNext = () => {
-    if (canNext) setPage((current) => Math.min(TOTAL_PAGES, current + pageStep));
-  };
+  const goNext = useCallback(() => {
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  }, [totalPages]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 800px)');
@@ -40,14 +40,27 @@ const Magazine = () => {
   }, []);
 
   useEffect(() => {
-    if (!readerOpen) return undefined;
-
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') closeReader();
-      if (event.key === 'ArrowLeft') goPrevious();
-      if (event.key === 'ArrowRight') goNext();
+      if (event.key === 'ArrowLeft') {
+        goPrevious();
+      }
+
+      if (event.key === 'ArrowRight') {
+        goNext();
+      }
+
+      if (event.key === 'Escape') {
+        onClose();
+      }
     };
 
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [goNext, goPrevious, onClose]);
+  
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
