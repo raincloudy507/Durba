@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 import './Magazine.css';
 
 const TOTAL_PAGES = 41;
@@ -15,22 +20,24 @@ const Magazine = () => {
   const canPrevious = page > 1;
   const canNext = page < TOTAL_PAGES;
 
-  const openReader = () => {
-    setPage(1);
-    setReaderOpen(true);
-  };
-
-  const closeReader = () => setReaderOpen(false);
-
   const pageStep = isMobile ? 1 : 2;
 
-  const goPrevious = () => {
-    if (canPrevious) setPage((current) => Math.max(1, current - pageStep));
-  };
+  const openReader = useCallback(() => {
+    setPage(1);
+    setReaderOpen(true);
+  }, []);
 
-  const goNext = () => {
-    if (canNext) setPage((current) => Math.min(TOTAL_PAGES, current + pageStep));
-  };
+  const closeReader = useCallback(() => {
+    setReaderOpen(false);
+  }, []);
+
+  const goPrevious = useCallback(() => {
+    setPage((current) => Math.max(1, current - pageStep));
+  }, [pageStep]);
+
+  const goNext = useCallback(() => {
+    setPage((current) => Math.min(TOTAL_PAGES, current + pageStep));
+  }, [pageStep]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 800px)');
@@ -43,20 +50,30 @@ const Magazine = () => {
     if (!readerOpen) return undefined;
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') closeReader();
-      if (event.key === 'ArrowLeft') goPrevious();
-      if (event.key === 'ArrowRight') goNext();
+      if (event.key === 'Escape') {
+        closeReader();
+      }
+
+      if (event.key === 'ArrowLeft') {
+        goPrevious();
+      }
+
+      if (event.key === 'ArrowRight') {
+        goNext();
+      }
     };
 
     const previousOverflow = document.body.style.overflow;
+
     document.body.style.overflow = 'hidden';
+
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [readerOpen, page]);
+  }, [readerOpen, goPrevious, goNext]);
 
   const pages = useMemo(() => {
     const secondPage = page + 1 <= TOTAL_PAGES ? page + 1 : null;
