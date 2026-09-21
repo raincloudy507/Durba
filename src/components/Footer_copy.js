@@ -9,7 +9,7 @@ const Footer = () => {
 	// const togglePrivacy = (e) => {
     // 	e.preventDefault(); // Prevents the #Homepage jump
     // 	setIsPrivacyOpen(!isPrivacyOpen);
-  	
+  	};
 
 	const [isTermsOpen, setIsTermsOpen] = useState(false);
 	const toggleTerms = (e) => {
@@ -182,6 +182,75 @@ const Footer = () => {
 								</div>
 							</div>
 						</div>
+						
+
+ {/* {showPrivacy && ( 
+  <div
+    className="privacy-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="privacy-modal-title"
+    // onClick={() => setShowPrivacy(false)}
+  >
+    <div
+      className="privacy-modal-content"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        type="button"
+        className="privacy-modal-close"
+        aria-label="Close Privacy Policy"
+        // onClick={() => setShowPrivacy(false)}
+      >
+        ×
+      </button>
+
+      <h2 id="privacy-modal-title">Privacy Policy</h2>
+
+      <div className="privacy-modal-body">
+        <p>
+          Your privacy is important to us. This website is operated by
+          DURBA for the purpose of sharing information about our community,
+          events, programs, and activities.
+        </p>
+
+        <h3>Information We Collect</h3>
+        <p>
+          We do not collect personal information through this website unless
+          you voluntarily provide it through a contact, registration, or
+          participation form.
+        </p>
+
+        <h3>How We Use Information</h3>
+        <p>
+          Information voluntarily provided to us may be used to respond to
+          inquiries, communicate about events and activities, and support
+          community programs.
+        </p>
+
+        <h3>Cookies and Analytics</h3>
+        <p>
+          This website may use basic cookies or analytics technologies to
+          understand website usage and improve the user experience.
+        </p>
+
+        <h3>Third-Party Services</h3>
+        <p>
+          Some website functionality may rely on third-party services.
+          Those services may have their own privacy policies governing the
+          information they collect.
+        </p>
+
+        <h3>Contact</h3>
+        <p>
+          If you have questions about this Privacy Policy or how information
+          is handled, please contact us through the contact information
+          provided on this website.
+        </p>
+      </div>
+    </div>
+  </div>
+)}*/}
 					</footer>
 
 				</div>
