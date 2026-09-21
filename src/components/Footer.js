@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+// import React, {useState} from 'react';
+// import React from 'react';
 import './Footer.css';
-import PrivacyPolicy from './Privacy_policy';
-import TermsOfService from './Terms_of_service';
+// import PrivacyPolicy from './Privacy_policy';
+// import TermsOfService from './Terms_of_service';
 
 const Footer = () => {
 	const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
-	const togglePrivacy = (e) => {
-    	e.preventDefault(); // Prevents the #Homepage jump
-    	setIsPrivacyOpen(!isPrivacyOpen);
+	// const togglePrivacy = (e) => {
+    // 	e.preventDefault(); // Prevents the #Homepage jump
+    // 	setIsPrivacyOpen(!isPrivacyOpen);
   	};
 
 	const [isTermsOpen, setIsTermsOpen] = useState(false);
