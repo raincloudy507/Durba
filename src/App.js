@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Mission from './components/Mission';
 import Events from './components/Events';
 import Gallery from './components/Gallery';
+import Magazine from './components/Magazine';
 import './style.css';
 import './index.css';
 
@@ -25,6 +26,7 @@ function App() {
       <section id="Gallery">
         <Gallery />
       </section>
+      <Magazine />
 
       <Footer />
     </div>

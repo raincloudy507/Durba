@@ -47,7 +47,7 @@ const Navigation = () => {
     { href: "#Mission", text: "Our Mission" }, 
     { href: "#Events", text: "Events & Festivals" }, 
     { href: "#Gallery", text: "Gallery" },     
-    { href: "#Magazine", text: "দুর্বার দর্পন" }, 
+    { href: "#Magazine", text: "Magazine" }, 
   ];
 
   return (
@@ -164,7 +164,8 @@ const MobileMenu = ({ isOpen, onClose }) => {
           <li><a href="/" onClick={onClose}>Home</a></li>
           <li><a href="#Mission" onClick={onClose}>Our Mission</a></li>
           <li><a href="#Events" onClick={onClose}>Events & Festivals</a></li>
-          <li><a href="#Magazine" onClick={onClose}>দুর্বার দর্পন (Durbar Darpan)</a></li>
+          <li><a href="#Gallery" onClick={onClose}>Gallery</a></li>
+          <li><a href="#Magazine" onClick={onClose}>Magazine · দুর্বার দর্পন</a></li>
         </ul>
       </div>
     </div>
