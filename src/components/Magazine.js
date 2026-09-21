@@ -1,56 +1,90 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import './Magazine.css';
 
 const TOTAL_PAGES = 63;
-const PAGE_PATH = (page) =>
-  `/magazine/pages/page-${String(page).padStart(3, '0')}.webp`;
+
+const PAGE_PATH = (pageNumber) =>
+  `/magazine/pages/page-${String(pageNumber).padStart(3, '0')}.webp`;
 
 const Magazine = () => {
   const [readerOpen, setReaderOpen] = useState(false);
   const [page, setPage] = useState(1);
+
   const [isMobile, setIsMobile] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 800px)').matches
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 800px)').matches
   );
+
+  const pageStep = isMobile ? 1 : 2;
 
   const canPrevious = page > 1;
   const canNext = page < TOTAL_PAGES;
 
-  const openReader = () => {
+  const openReader = useCallback(() => {
     setPage(1);
     setReaderOpen(true);
-  };
+  }, []);
 
-  const closeReader = () => setReaderOpen(false);
-
-  const pageStep = isMobile ? 1 : 2;
+  const closeReader = useCallback(() => {
+    setReaderOpen(false);
+  }, []);
 
   const goPrevious = useCallback(() => {
-    setCurrentPage((prev) => Math.max(1, prev - 1));
-  }, []);
+    setPage((currentPage) => {
+      return Math.max(1, currentPage - pageStep);
+    });
+  }, [pageStep]);
 
   const goNext = useCallback(() => {
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-  }, [totalPages]);
+    setPage((currentPage) => {
+      return Math.min(TOTAL_PAGES, currentPage + pageStep);
+    });
+  }, [pageStep]);
 
+  /*
+   * Detect mobile/desktop screen size
+   */
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 800px)');
-    const handleMediaChange = (event) => setIsMobile(event.matches);
+
+    const handleMediaChange = (event) => {
+      setIsMobile(event.matches);
+    };
+
     mediaQuery.addEventListener?.('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener?.('change', handleMediaChange);
+
+    return () => {
+      mediaQuery.removeEventListener?.('change', handleMediaChange);
+    };
   }, []);
 
+  /*
+   * Keyboard controls
+   *
+   * Left Arrow  = Previous page
+   * Right Arrow = Next page
+   * Escape      = Close reader
+   */
   useEffect(() => {
+    if (!readerOpen) {
+      return undefined;
+    }
+
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowLeft') {
+        event.preventDefault();
         goPrevious();
       }
 
       if (event.key === 'ArrowRight') {
+        event.preventDefault();
         goNext();
       }
 
       if (event.key === 'Escape') {
-        onClose();
+        event.preventDefault();
+        closeReader();
       }
     };
 
@@ -59,30 +93,60 @@ const Magazine = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [goNext, goPrevious, onClose]);
-  
+  }, [readerOpen, goPrevious, goNext, closeReader]);
+
+  /*
+   * Prevent the main page from scrolling while the reader is open
+   */
+  useEffect(() => {
+    if (!readerOpen) {
+      return undefined;
+    }
+
     const previousOverflow = document.body.style.overflow;
+
     document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [readerOpen, page]);
+  }, [readerOpen]);
 
+  /*
+   * Determine which pages should be displayed.
+   *
+   * Desktop:
+   *   Page 1 + Page 2
+   *   Page 3 + Page 4
+   *   etc.
+   *
+   * Mobile:
+   *   One page at a time.
+   */
   const pages = useMemo(() => {
-    const secondPage = page + 1 <= TOTAL_PAGES ? page + 1 : null;
-    return { first: page, second: secondPage };
-  }, [page]);
+    const secondPage =
+      !isMobile && page + 1 <= TOTAL_PAGES ? page + 1 : null;
+
+    return {
+      first: page,
+      second: secondPage,
+    };
+  }, [page, isMobile]);
 
   return (
     <>
+      {/* =========================================================
+          MAGAZINE LANDING SECTION
+          ========================================================= */}
       <section id="Magazine" className="magazine-section">
         <div className="magazine-shell">
           <div className="magazine-copy">
-            <span className="magazine-eyebrow">DURBA FOUNDATION • DIGITAL MAGAZINE</span>
+            <span className="magazine-eyebrow">
+              DURBA FOUNDATION • DIGITAL MAGAZINE
+            </span>
+
             <h2 className="magazine-title">দুর্বার দর্পন</h2>
+
             <p className="magazine-lead">
               Step inside the Durba Foundation magazine and explore the stories,
               people, celebrations and community moments that bring our
@@ -95,7 +159,11 @@ const Magazine = () => {
               <span>Digital reader</span>
             </div>
 
-            <button type="button" className="magazine-primary" onClick={openReader}>
+            <button
+              type="button"
+              className="magazine-primary"
+              onClick={openReader}
+            >
               <span>Read Magazine</span>
               <span aria-hidden="true">→</span>
             </button>
@@ -108,11 +176,13 @@ const Magazine = () => {
             aria-label="Open Durba Foundation digital magazine"
           >
             <div className="magazine-cover-glow" />
+
             <img
               src={PAGE_PATH(1)}
               alt="Magazine cover"
               className="magazine-cover-image"
             />
+
             <div className="magazine-cover-overlay">
               <span>OPEN READER</span>
             </div>
@@ -120,11 +190,21 @@ const Magazine = () => {
         </div>
       </section>
 
+      {/* =========================================================
+          FULL SCREEN MAGAZINE READER
+          ========================================================= */}
       {readerOpen && (
-        <div className="magazine-reader" role="dialog" aria-modal="true" aria-label="Digital magazine reader">
+        <div
+          className="magazine-reader"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Digital magazine reader"
+        >
+          {/* Reader Header */}
           <header className="magazine-reader-header">
             <div className="magazine-reader-brand">
               <span className="magazine-reader-mark">D</span>
+
               <div>
                 <strong>দুর্বার দর্পন</strong>
                 <small>Durba Foundation Digital Magazine</small>
@@ -140,13 +220,20 @@ const Magazine = () => {
               >
                 Download PDF
               </a>
-              <button type="button" onClick={closeReader} aria-label="Close magazine reader">
+
+              <button
+                type="button"
+                onClick={closeReader}
+                aria-label="Close magazine reader"
+              >
                 ✕
               </button>
             </div>
           </header>
 
+          {/* Reader Body */}
           <main className="magazine-reader-body">
+            {/* Previous */}
             <button
               type="button"
               className="magazine-arrow magazine-arrow-left"
@@ -157,18 +244,30 @@ const Magazine = () => {
               ‹
             </button>
 
+            {/* Magazine */}
             <div className="magazine-book">
-              <div className={`magazine-page magazine-page-left ${page > 1 ? 'is-open' : ''}`}>
-                <img src={PAGE_PATH(pages.first)} alt={`Magazine page ${pages.first}`} />
+              <div
+                className={`magazine-page magazine-page-left ${
+                  page > 1 ? 'is-open' : ''
+                }`}
+              >
+                <img
+                  src={PAGE_PATH(pages.first)}
+                  alt={`Magazine page ${pages.first}`}
+                />
               </div>
 
               {pages.second && (
                 <div className="magazine-page magazine-page-right">
-                  <img src={PAGE_PATH(pages.second)} alt={`Magazine page ${pages.second}`} />
+                  <img
+                    src={PAGE_PATH(pages.second)}
+                    alt={`Magazine page ${pages.second}`}
+                  />
                 </div>
               )}
             </div>
 
+            {/* Next */}
             <button
               type="button"
               className="magazine-arrow magazine-arrow-right"
@@ -180,9 +279,11 @@ const Magazine = () => {
             </button>
           </main>
 
+          {/* Reader Footer */}
           <footer className="magazine-reader-footer">
             <div className="magazine-page-status">
-              Pages {pages.first}{pages.second ? `–${pages.second}` : ''} of {TOTAL_PAGES}
+              Pages {pages.first}
+              {pages.second ? `–${pages.second}` : ''} of {TOTAL_PAGES}
             </div>
 
             <input
