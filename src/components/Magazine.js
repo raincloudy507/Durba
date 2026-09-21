@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import './Magazine.css';
 
-const TOTAL_PAGES = 41;
+const TOTAL_PAGES = 42;
 const PAGE_PATH = (page) =>
   `/magazine/pages/page-${String(page).padStart(3, '0')}.webp`;
 
