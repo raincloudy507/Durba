@@ -166,7 +166,7 @@ const Footer = () => {
 										<button
 										type="button"
 										className="footer-legal-link footer-legal-button"
-										onClick={() => setShowPrivacy(true)}
+										// onClick={() => setShowPrivacy(true)}
 										>
 										Privacy Policy
 										</button>
@@ -181,13 +181,15 @@ const Footer = () => {
 								</div>
 							</div>
 						</div>
-{showPrivacy && (
+						
+
+ {/* {showPrivacy && ( 
   <div
     className="privacy-modal"
     role="dialog"
     aria-modal="true"
     aria-labelledby="privacy-modal-title"
-    onClick={() => setShowPrivacy(false)}
+    // onClick={() => setShowPrivacy(false)}
   >
     <div
       className="privacy-modal-content"
@@ -197,7 +199,7 @@ const Footer = () => {
         type="button"
         className="privacy-modal-close"
         aria-label="Close Privacy Policy"
-        onClick={() => setShowPrivacy(false)}
+        // onClick={() => setShowPrivacy(false)}
       >
         ×
       </button>
@@ -247,14 +249,14 @@ const Footer = () => {
       </div>
     </div>
   </div>
-)}
+)}*/}
 					</footer>
 
 				</div>
 			</div>
 		</footer-wrapper>
 	);
-};
+}; 
 
 
 export default Footer;

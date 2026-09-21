@@ -5,18 +5,24 @@ import './Navigation.css';
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // 1. Add state to track the active link
-  const [setActiveLink] = useState('Home');
+  const [activeLink, setActiveLink] = useState('Home');
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const closeMenu = () => setIsMenuOpen(false);
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+  
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   // 2. Function to handle link clicks
-  // const handleNavLinkClick = (text) => {
-  //   setActiveLink(text);
-  //   setIsMenuOpen(false); // Close mobile menu when a link is clicked
-  // };
+  const handleNavLinkClick = (text) => {
+    setActiveLink(text);
+    setIsMenuOpen(false); // Close mobile menu when a link is clicked
+    closeMenu();
+  };
 
-    // ✅ Scroll lock
+    // Lock page scrolling when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -25,21 +31,33 @@ const Navigation = () => {
     }
   }, [isMenuOpen]);
 
-  // ✅ Close on ESC
+  // Close on ESC
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === "Escape") closeMenu();
+      if (e.key === "Escape") 
+        closeMenu();
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
 
+  const navItems = [ 
+    { href: "/", text: "Home" }, 
+    { href: "#Mission", text: "Our Mission" }, 
+    { href: "#Events", text: "Events & Festivals" }, 
+    { href: "#Gallery", text: "Gallery" },     
+    { href: "#Magazine", text: "দুর্বার দর্পন" }, 
+  ];
+
   return (
     <div className="navigation-wrapper">
       <div className="navigation-container1">
         <nav id="navigation-main" className="navigation">
           <div className="navigation-container">
+
+              {/* LOGO */}
+
             <a href="/" onClick={() => setActiveLink('Home')}>
               <div aria-label="Durba Foundation Home" className="navigation-logo">
                 <div className="navigation-logo-icon">
@@ -52,7 +70,34 @@ const Navigation = () => {
               </div>
             </a>
 
-            <button className="navigation-toggle" onClick={toggleMenu} aria-label="Toggle menu">
+                    {/* DESKTOP NAVIGATION */}
+            
+            <div className="navigation-menu">
+              <ul className="navigation-list">
+                {navItems.map((item) => (
+                  <li key={item.text} className="navigation-item" >
+                    <a href={item.href} onClick={() => handleNavLinkClick(item.text)} className={`navigation-link ${ activeLink === item.text ? "active" : "" }`}>
+                      <span className="navigation-link-text"> {item.text} </span>
+                      <span className="navigation-link-accent" />
+                    </a>
+                  </li>
+                ))}
+
+                    {/* CTA */}
+            
+               <li className="navigation-item navigation-item-cta">
+                  <a
+                    href="#GetInvolved" onClick={() => handleNavLinkClick("Get Involved")}    
+                    className="navigation-link navigation-cta" >
+                   <span className="navigation-link-text">Get Involved</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+                    {/* MOBILE HAMBURGER MENU */}
+
+            <button className="navigation-toggle" onClick={toggleMenu} aria-label="Toggle menu" aria-expanded={isMenuOpen}>
               {!isMenuOpen ? (
                 <span className="navigation-toggle-open">
                   <svg width="24" height="24" viewBox="0 0 24 24">
@@ -67,7 +112,9 @@ const Navigation = () => {
                 </span>
               )}
             </button>
-            {/* ✅ Portal menu */}
+
+                    {/* MOBILE MENU */}
+
             {createPortal(
               <MobileMenu isOpen={isMenuOpen} onClose={closeMenu} />,
                 document.body

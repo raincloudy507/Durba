@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const [showPrivacy, setShowPrivacy] = useState(false);
+// const [showPrivacy, setShowPrivacy] = useState(false);
 const PrivacyPolicy = () => {
   return (
     <div className="privacy-policy-container">
