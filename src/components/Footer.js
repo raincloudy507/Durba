@@ -1,5 +1,4 @@
-// import React, {useState} from 'react';
-// import React from 'react';
+import React, {useState} from 'react';
 import './Footer.css';
 // import PrivacyPolicy from './Privacy_policy';
 // import TermsOfService from './Terms_of_service';
